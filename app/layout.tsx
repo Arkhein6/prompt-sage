@@ -2,6 +2,8 @@ import "@styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
 import { Metadata } from "next";
+import { useSession } from "next-auth/react";
+
 
 export const metadata: Metadata = {
 	title: "PromptSage",
@@ -13,16 +15,21 @@ type Props = {
 };
 
 const RootLayout = ({ children }: Props) => {
+	const {data: currentSession} = useSession() 
 	return (
 		<html lang="en">
 			<body>
-				<div className="main">
-					<div className="gradient"></div>
-				</div>
-				<main className="app">
-					<Nav />
-					{children}
-					</main>
+				<Provider session={currentSession}>
+					<>
+						<div className="main">
+							<div className="gradient"></div>
+						</div>
+						<main className="app">
+							<Nav />
+							{children}
+						</main>
+					</>
+				</Provider>
 			</body>
 		</html>
 	);
